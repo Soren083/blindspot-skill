@@ -2,6 +2,8 @@
 
 Preflight checks for AI coding.
 
+[中文说明](README.zh-CN.md)
+
 ReqCheck is a Codex / Claude skill that turns vague product ideas into development-ready briefs before an AI agent writes code.
 
 It is built for people who are not code-first. The user can say something rough like "build a customer import feature" or "make this page work like the competitor", and ReqCheck helps the AI ask the product questions that usually become bugs later.
