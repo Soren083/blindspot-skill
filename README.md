@@ -25,7 +25,7 @@ ReqCheck makes the AI slow down before implementation and turn those hidden deci
 User:
 
 ```md
-帮我做一个客户导入功能。
+Build a customer import feature.
 ```
 
 Without ReqCheck:
@@ -37,11 +37,11 @@ AI starts coding an upload button.
 With ReqCheck:
 
 ```md
-ReqCheck 会先帮你想清楚：
+ReqCheck first asks:
 
-1. 用户上传后，是直接加入客户列表，还是先看到一页确认名单？
-2. 文件里有重复客户时，是自动跳过，还是提醒用户决定？
-3. 只导入成功一部分时，用户要不要看到成功和失败的明细？
+1. After users upload a file, should customers be added immediately, or should users review the list first?
+2. If the file contains customers that already exist, should the system skip them automatically or ask users what to do?
+3. If only part of the file imports successfully, should users see which rows succeeded and which failed?
 ```
 
 That difference matters. The second version prevents real bugs: accidental imports, duplicate customers, unclear partial failures, and confusing recovery flows.
@@ -100,14 +100,6 @@ Use reqcheck before coding.
 
 My request:
 Build a customer import feature.
-```
-
-Or in Chinese:
-
-```md
-用 reqcheck 先帮我澄清需求，不要直接写代码。
-
-我的需求是：帮我做一个客户导入功能。
 ```
 
 ReqCheck should output:
