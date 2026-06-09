@@ -6,7 +6,7 @@
 Make an admin dashboard for orders.
 ```
 
-## ReqCheck Questions
+## Blindspot Questions
 
 ```md
 1. Which number should be treated as the source of truth: paid orders, created orders, or shipped orders?

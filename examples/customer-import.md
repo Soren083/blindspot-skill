@@ -6,10 +6,10 @@
 帮我做一个客户导入功能。
 ```
 
-## ReqCheck Questions
+## Blindspot Questions
 
 ```md
-ReqCheck 会先帮你想清楚：
+Blindspot Skill 会先帮你想清楚：
 
 1. 用户上传后，是直接加入客户列表，还是先看到一页确认名单？
 2. 文件里有重复客户时，是自动跳过，还是提醒用户决定？

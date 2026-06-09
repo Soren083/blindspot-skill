@@ -18,13 +18,17 @@
   <a href="#install"><img src="https://img.shields.io/badge/Tools-Codex%20%C2%B7%20Claude%20Code-111827?style=for-the-badge&labelColor=1e293b" alt="Supported agents"/></a>
 </p>
 
-Blindspot Skill, formerly **ReqCheck**, is a pre-implementation skill for AI coding agents. It makes the agent walk through a request like a real human user, then hunt for the product, state, regression, source-of-truth, AI-context, visual, integration, and release-path blind spots it would usually miss.
+Blindspot Skill is a pre-implementation skill for AI coding agents.
 
-It is not a generic requirements checklist. It was distilled from **20+ real correction loops with Codex and Claude Code** while building and reviewing actual app features. In those sessions, the agents often wrote plausible plans and working code, but a human user still had to catch the parts that would break in real product use.
+It was distilled from **247 real Codex and Claude Code mistakes** caught during product development: bugs that compiled, plans that sounded right, UI that looked cleaner, and agent answers that were technically plausible but still failed once a real human used the product.
+
+The pattern was painfully consistent: AI agents are fast at code, but they miss the boring product reality around the code. They forget entry points. They trust local flags. They confuse empty data with failure. They call prompt text a guardrail. They ship UI copy that only engineers understand. They fix the screen in front of them and miss the release path users actually receive.
+
+Blindspot Skill turns those mistakes into a repeatable pre-build pass. Before the agent writes code, it has to walk through the request like a real user and hunt for the hidden product, state, regression, source-of-truth, AI-context, visual, integration, and release-path blind spots it would normally skip.
 
 ## What Human Corrections Revealed
 
-| What the human had to correct | Agent blind spot |
+| What 247 real mistakes exposed | Agent blind spot |
 | --- | --- |
 | The UI claimed something was connected, saved, or enabled when the system could not prove it | False success states |
 | Empty external data was treated as failed permission or failed sync | No-data vs denied/unknown ambiguity |
@@ -37,9 +41,9 @@ It is not a generic requirements checklist. It was distilled from **20+ real cor
 | Copy was technically accurate but real users could not quickly understand what to do | User-language blindness |
 | A read path was unified but write paths, caches, projections, or related surfaces stayed stale | Partial-chain fixes |
 
-Blindspot Skill turns those corrections into a repeatable pre-build pass.
+If you use AI coding agents to build real products, this skill is meant to catch the mistake before your users, reviewers, or teammates do.
 
-## Why
+## Why It Exists
 
 Most AI coding failures do not start with syntax.
 
@@ -107,7 +111,7 @@ Copy the skill directory into your Codex skills folder:
 
 ```bash
 mkdir -p ~/.codex/skills
-cp -R skills/codex/reqcheck ~/.codex/skills/reqcheck
+cp -R skills/codex/blindspot ~/.codex/skills/blindspot
 ```
 
 Restart Codex or open a new session if the skill list does not refresh immediately.
@@ -118,19 +122,19 @@ Copy the skill directory into your Claude skills folder:
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R skills/claude/reqcheck ~/.claude/skills/reqcheck
+cp -R skills/claude/blindspot ~/.claude/skills/blindspot
 ```
 
 You can also import the packaged file:
 
 ```text
-packages/reqcheck.skill
+packages/blindspot.skill
 ```
 
 ## Use
 
 ```md
-Use reqcheck before coding.
+Use agent-blindspot before coding.
 
 My request:
 Build a customer import feature.
@@ -184,15 +188,15 @@ See [eval prompts](evals/prompts.json).
 ## Project Structure
 
 ```text
-reqcheck/
+blindspot-skill/
   README.md
   README.zh-CN.md
   assets/
   skills/
-    codex/reqcheck/SKILL.md
-    claude/reqcheck/SKILL.md
+    codex/blindspot/SKILL.md
+    claude/blindspot/SKILL.md
   packages/
-    reqcheck.skill
+    blindspot.skill
   docs/
     patterns.md
   examples/

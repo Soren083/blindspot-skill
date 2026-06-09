@@ -6,7 +6,7 @@
 Add an AI summary for user reports.
 ```
 
-## ReqCheck Questions
+## Blindspot Questions
 
 ```md
 1. Should the AI summary be generated automatically, or only after users click a button?

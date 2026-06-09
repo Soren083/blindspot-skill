@@ -14,13 +14,17 @@
 
 [English README](README.md)
 
-Blindspot Skill，原名 **ReqCheck**，是一个给 Codex / Claude Code 这类 AI Coding Agent 使用的预检查 skill。它会让 Agent 在写代码前，先像真实人类用户一样走一遍产品，再检查产品状态、真实证据、旧逻辑回归、AI 上下文、视觉状态、外部集成和发布路径里可能漏掉的问题。
+Blindspot Skill 是一个给 Codex / Claude Code 这类 AI Coding Agent 使用的预检查 skill。
 
-它不是普通的需求清单。它是从 **20+ 次真实 Codex / Claude Code 产品开发纠错循环**里总结出来的。在这些真实对话中，Agent 往往能写出看起来合理的方案和能运行的代码，但仍然需要人类用户指出：真实用户会误解、状态会撒谎、旧入口没改、发布路径不对、AI 记忆会泄漏旧信息。
+它是从 **247 个真实 Codex 和 Claude Code 犯过的错误**里总结出来的：这些错误不是简单的语法错误，而是那些“代码能跑、方案听起来也合理、UI 看起来甚至更干净”，但一到真实用户使用、真机测试、审核环境、线上发布就会暴露的问题。
+
+这些错误背后的模式非常稳定：AI Agent 写代码很快，但它经常看不见代码之外的产品现实。它会漏入口、信本地 flag、把没有数据当成失败、把 prompt 文案当成硬约束、写出只有工程师看得懂的 UI 文案、修了眼前这个页面却漏掉用户真正会用到的版本。
+
+Blindspot Skill 就是把这些错误变成一套固定的写代码前检查。Agent 在动手前，必须先像真实人类用户一样走一遍产品，再去找产品状态、真实证据、旧逻辑回归、AI 上下文、视觉状态、外部集成和发布路径里最容易漏掉的盲点。
 
 ## 这些真实纠错暴露了什么
 
-| 人类反复纠正的问题 | Agent 的盲点 |
+| 247 个真实错误暴露的问题 | Agent 的盲点 |
 | --- | --- |
 | UI 显示 connected / saved / enabled，但系统其实没有证据证明成功 | 虚假的成功状态 |
 | 外部系统没有数据，被误判成没有授权或同步失败 | no data、denied、unknown 混在一起 |
@@ -33,9 +37,9 @@ Blindspot Skill，原名 **ReqCheck**，是一个给 Codex / Claude Code 这类 
 | 文案技术上正确，但真实用户看不懂、不会选 | 真实用户语言盲点 |
 | 只改了读路径，漏了写路径、缓存、派生字段、其他展示面 | 只修局部，漏全链路 |
 
-Blindspot Skill 的作用，就是把这些人类纠错沉淀成 Agent 写代码前的固定检查动作。
+如果你用 AI Coding Agent 做真实产品，这个 skill 的目标就是：在用户、审核人员、同事发现问题前，先让 Agent 自己发现。
 
-## 为什么需要它
+## 为什么它有用
 
 很多 AI 写代码失败，不是失败在语法。
 
@@ -103,7 +107,7 @@ Agent 会先检查：
 
 ```bash
 mkdir -p ~/.codex/skills
-cp -R skills/codex/reqcheck ~/.codex/skills/reqcheck
+cp -R skills/codex/blindspot ~/.codex/skills/blindspot
 ```
 
 如果 skill 列表没有立刻刷新，重启 Codex 或打开一个新会话。
@@ -114,19 +118,19 @@ cp -R skills/codex/reqcheck ~/.codex/skills/reqcheck
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R skills/claude/reqcheck ~/.claude/skills/reqcheck
+cp -R skills/claude/blindspot ~/.claude/skills/blindspot
 ```
 
 也可以导入打包文件：
 
 ```text
-packages/reqcheck.skill
+packages/blindspot.skill
 ```
 
 ## 使用方法
 
 ```md
-用 reqcheck 先帮我澄清需求，不要直接写代码。
+用 agent-blindspot 先帮我澄清需求，不要直接写代码。
 
 我的需求是：帮我做一个客户导入功能。
 ```
@@ -179,15 +183,15 @@ packages/reqcheck.skill
 ## 项目结构
 
 ```text
-reqcheck/
+blindspot-skill/
   README.md
   README.zh-CN.md
   assets/
   skills/
-    codex/reqcheck/SKILL.md
-    claude/reqcheck/SKILL.md
+    codex/blindspot/SKILL.md
+    claude/blindspot/SKILL.md
   packages/
-    reqcheck.skill
+    blindspot.skill
   docs/
     patterns.md
   examples/

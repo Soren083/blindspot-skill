@@ -6,7 +6,7 @@
 Add a paywall for Pro users.
 ```
 
-## ReqCheck Questions
+## Blindspot Questions
 
 ```md
 1. Should users see the paywall before trying the feature, or only after they hit a free limit?

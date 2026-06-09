@@ -6,7 +6,7 @@
 Build a calendar event creation flow.
 ```
 
-## ReqCheck Questions
+## Blindspot Questions
 
 ```md
 1. If users create an event from a selected day, should that day be the default date?

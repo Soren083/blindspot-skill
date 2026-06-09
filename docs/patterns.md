@@ -1,6 +1,6 @@
-# ReqCheck Pattern Library
+# Blindspot Pattern Library
 
-These patterns are the core of ReqCheck. They are written for product thinking before code starts.
+These patterns are the core of Blindspot Skill. They are written for product thinking before code starts.
 
 ## 1. Temporary Result vs Final Result
 

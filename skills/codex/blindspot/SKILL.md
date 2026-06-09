@@ -1,9 +1,9 @@
 ---
-name: reqcheck
+name: agent-blindspot
 description: Use before implementation when a request could hide product, state, regression, source-of-truth, AI-context, visual, integration, or release-path blind spots. Especially useful for vague product requests, bug reports, screenshots, permissions, payments, app review, privacy/legal, health or sensitive data, async AI/upload flows, login/account, cross-surface data, existing UI changes, and any state that claims success, connected, synced, saved, authorized, paid, deleted, or complete. The skill makes the agent walk through the product like a real user, then produce a concrete development brief with negative cases and evidence requirements before coding.
 ---
 
-# Blindspot Skill (ReqCheck)
+# Blindspot Skill
 
 > Make AI agents think through what they are about to miss.
 

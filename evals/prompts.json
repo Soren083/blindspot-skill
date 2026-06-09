@@ -1,29 +1,29 @@
 {
-  "skill_name": "reqcheck",
+  "skill_name": "agent-blindspot",
   "evals": [
     {
       "id": "customer-import",
-      "prompt": "用 reqcheck 先帮我澄清需求，不要直接写代码。我的需求是：帮我做一个客户导入功能。",
+      "prompt": "用 agent-blindspot 先帮我澄清需求，不要直接写代码。我的需求是：帮我做一个客户导入功能。",
       "expected_output": "Asks no more than 3 plain-language questions about preview/confirmation, duplicate customers, and partial import results. Does not ask for database fields first."
     },
     {
       "id": "calendar-event",
-      "prompt": "Use reqcheck before coding. I want to add a calendar event creation flow.",
+      "prompt": "Use agent-blindspot before coding. I want to add a calendar event creation flow.",
       "expected_output": "Identifies date context inheritance, completion/cancel behavior, and notification or permission edge cases before implementation."
     },
     {
       "id": "ai-summary",
-      "prompt": "用 reqcheck 检查这个功能会不会漏需求：给报告页面加一个 AI 总结。",
+      "prompt": "用 agent-blindspot 检查这个功能会不会漏需求：给报告页面加一个 AI 总结。",
       "expected_output": "Clarifies trigger timing, data allowed for AI input, fallback on AI failure, and user-visible uncertainty."
     },
     {
       "id": "paywall",
-      "prompt": "Use reqcheck. Add a subscription paywall for Pro features.",
+      "prompt": "Use agent-blindspot. Add a subscription paywall for Pro features.",
       "expected_output": "Clarifies free limit timing, payment success/failure states, restore purchase, expired subscription, and not-doing risks."
     },
     {
       "id": "health-permission",
-      "prompt": "用 reqcheck 深度模式，先不要写代码。我有一个苹果健康授权页，用户点击授权后会弹出系统 HealthKit 权限页。点不允许后页面现在还是显示连接成功，你帮我澄清这个需求。",
+      "prompt": "用 agent-blindspot 深度模式，先不要写代码。我有一个苹果健康授权页，用户点击授权后会弹出系统 HealthKit 权限页。点不允许后页面现在还是显示连接成功，你帮我澄清这个需求。",
       "expected_output": "Identifies this as a high-risk permission/app-review/health-data flow, audits the source of truth for connected/setup-complete states, notes that read permission may not be verifiable, requires unverified/pending UI instead of success copy, and includes negative acceptance tests for deny, no data, settings changes, and review-device behavior."
     }
   ]
