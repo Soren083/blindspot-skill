@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/readme-banner.svg" alt="Blindspot Skill - Make AI agents think through what they are about to miss" width="100%" />
+  <img src="assets/readme-banner.png" alt="Blindspot Skill - Make AI agents think through what they are about to miss" width="100%" />
 </p>
 
 # Blindspot Skill
@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/blindspot-skill-logo.svg" width="84" height="84" alt="Blindspot Skill" />
+  <img src="assets/blindspot-skill-logo.png" width="84" height="84" alt="Blindspot Skill" />
 </p>
 
 <p align="center">
@@ -25,6 +25,21 @@ It was distilled from **247 real Codex and Claude Code mistakes** caught during 
 The pattern was painfully consistent: AI agents are fast at code, but they miss the boring product reality around the code. They forget entry points. They trust local flags. They confuse empty data with failure. They call prompt text a guardrail. They ship UI copy that only engineers understand. They fix the screen in front of them and miss the release path users actually receive.
 
 Blindspot Skill turns those mistakes into a repeatable pre-build pass. Before the agent writes code, it has to walk through the request like a real user and hunt for the hidden product, state, regression, source-of-truth, AI-context, visual, integration, and release-path blind spots it would normally skip.
+
+## Who This Is For
+
+Blindspot Skill is mainly for people using AI agents to build real products.
+
+You do not need to be a professional engineer or a full-time product manager to use it. In fact, it is most useful when you have a product idea, screenshot, bug report, competitor reference, or "this feels wrong" instinct, but you do not know how to spell out every state, API, permission, edge case, regression, and release constraint before asking an agent to code.
+
+Use it if you are:
+
+- an indie builder, founder, designer, operator, creator, or domain expert building with Codex, Claude Code, or another coding agent
+- a non-technical or semi-technical product owner who wants the agent to ask better questions before implementation
+- a product manager who wants a fast pre-build pass over user flows, success states, copy, edge cases, and release risk
+- an engineer who wants the agent to stop at the product boundary before jumping into code
+
+The skill does not replace your judgment. It helps both you and the agent notice the things neither side had fully specified yet.
 
 ## What Human Corrections Revealed
 
