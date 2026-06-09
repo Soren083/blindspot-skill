@@ -2,6 +2,11 @@
   <img src="assets/readme-banner.png" alt="Blindspot Skill - Make AI agents think through what they are about to miss" width="100%" />
 </p>
 
+<p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/README-English-111827?style=for-the-badge&labelColor=1e293b" alt="English README"/></a>
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/README-中文说明-22c55e?style=for-the-badge&labelColor=1e293b" alt="中文说明"/></a>
+</p>
+
 # Blindspot Skill
 
 <p align="center">
@@ -13,7 +18,6 @@
 </p>
 
 <p align="center">
-  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/中文说明-README.zh--CN.md-22c55e?style=for-the-badge&labelColor=1e293b" alt="Chinese README"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-fbbf24?style=for-the-badge&labelColor=1e293b" alt="MIT License"/></a>
   <a href="#install"><img src="https://img.shields.io/badge/Tools-Codex%20%C2%B7%20Claude%20Code-111827?style=for-the-badge&labelColor=1e293b" alt="Supported agents"/></a>
 </p>

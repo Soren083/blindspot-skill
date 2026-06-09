@@ -2,6 +2,11 @@
   <img src="assets/readme-banner.png" alt="Blindspot Skill - Make AI agents think through what they are about to miss" width="100%" />
 </p>
 
+<p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/README-English-111827?style=for-the-badge&labelColor=1e293b" alt="English README"/></a>
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/README-中文说明-22c55e?style=for-the-badge&labelColor=1e293b" alt="中文说明"/></a>
+</p>
+
 # Blindspot Skill
 
 <p align="center">
@@ -11,8 +16,6 @@
 <p align="center">
   <img src="assets/blindspot-skill-logo.png" width="84" height="84" alt="Blindspot Skill" />
 </p>
-
-[English README](README.md)
 
 Blindspot Skill 是一个给 Codex / Claude Code 这类 AI Coding Agent 使用的「写代码前预检查」skill。
 
