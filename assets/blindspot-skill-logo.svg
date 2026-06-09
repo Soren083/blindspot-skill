@@ -1,8 +1,29 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" rx="120" fill="#0F172A"/>
-  <circle cx="256" cy="256" r="164" fill="#111827" stroke="#38BDF8" stroke-width="18"/>
-  <circle cx="256" cy="256" r="76" fill="#38BDF8" fill-opacity="0.16" stroke="#F8FAFC" stroke-width="14"/>
-  <circle cx="256" cy="256" r="26" fill="#F8FAFC"/>
-  <path d="M96 256C132 178 188 139 256 139C324 139 380 178 416 256C380 334 324 373 256 373C188 373 132 334 96 256Z" stroke="#F8FAFC" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M362 150L150 362" stroke="#FB7185" stroke-width="22" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="bg" x1="58" y1="56" x2="468" y2="456" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF64D"/>
+      <stop offset="0.52" stop-color="#C8FF19"/>
+      <stop offset="1" stop-color="#21D8FF"/>
+    </linearGradient>
+    <filter id="softShadow" x="42" y="54" width="420" height="408" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0A0D1F" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M416 72C454 109 474 157 474 218C474 331 382 424 269 424C178 424 102 365 76 283" stroke="#0B1020" stroke-opacity="0.12" stroke-width="58" stroke-linecap="round"/>
+
+  <g filter="url(#softShadow)">
+    <path d="M105 321C91 230 137 153 226 136C311 120 391 169 410 253C427 330 381 389 301 405C210 423 120 388 105 321Z" fill="white" stroke="#0A0D1F" stroke-width="18" stroke-linejoin="round"/>
+    <path d="M109 318C78 310 57 293 48 268C43 254 45 242 54 237C66 229 82 241 95 258C106 272 115 288 122 306L109 318Z" fill="white" stroke="#0A0D1F" stroke-width="18" stroke-linejoin="round"/>
+  </g>
+
+  <circle cx="276" cy="239" r="53" fill="#0A0D1F"/>
+  <circle cx="294" cy="219" r="10" fill="white" fill-opacity="0.96"/>
+  <ellipse cx="199" cy="241" rx="15" ry="22" fill="#0A0D1F"/>
+  <path d="M199 310C222 334 263 337 292 315" stroke="#0A0D1F" stroke-width="17" stroke-linecap="round"/>
+  <circle cx="168" cy="286" r="15" fill="#FF5D8F" fill-opacity="0.88"/>
+
+  <path d="M361 126L374 96L387 126L417 139L387 152L374 182L361 152L331 139L361 126Z" fill="#0A0D1F"/>
+  <path d="M392 335L402 313L412 335L434 345L412 355L402 377L392 355L370 345L392 335Z" fill="white" fill-opacity="0.86"/>
 </svg>
