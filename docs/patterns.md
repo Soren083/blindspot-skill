@@ -129,7 +129,39 @@ Question: what proves this success state is true?
 
 Examples:
 
-- A HealthKit read permission flow can return without proving whether the user allowed read access, so the UI should not say "connected" unless another reliable check exists.
+- A platform permission flow can return without proving whether the user allowed access, so the UI should not say "connected" unless another reliable check exists.
 - A payment redirect can return before a webhook confirms the subscription, so the UI should show pending or verifying instead of instantly unlocking paid features.
 - An upload job can be queued but not processed, so the UI should say uploaded or processing only according to the backend state it can verify.
 - A local flag can prove user intent, but it cannot prove that a permission, sync, deletion, or payment actually succeeded.
+
+## 14. Human User Language
+
+Question: would a first-time user understand what this means and what to do next?
+
+Examples:
+
+- Users may understand "exercise 3-4 times a week" faster than an internal activity coefficient.
+- Users may need "No data yet" rather than a long explanation of hidden platform permission status.
+- Users may need one concrete next action instead of a vague recommendation like "be more balanced."
+
+## 15. AI Context Leakage
+
+Question: where can the AI learn an outdated or forbidden fact?
+
+Examples:
+
+- Structured state may be correct, but old conversation memory can still contain the previous user setting.
+- Prompt examples can teach the model to mention a mode that is currently disabled.
+- A tool result can be stale even when the latest screen state changed.
+- A "must never say this" requirement needs deterministic input filtering or output guardrails, not only a prompt instruction.
+
+## 16. Release Layer Mismatch
+
+Question: does the release mechanism match the layer changed?
+
+Examples:
+
+- A UI copy change may ship through a live update.
+- A native permission, entitlement, manifest, or SDK change usually needs a new app build.
+- A backend schema change needs deploy and migration proof.
+- An app-review issue needs the exact version/build reviewers will receive, not just local code.

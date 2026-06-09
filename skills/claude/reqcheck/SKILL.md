@@ -1,195 +1,243 @@
 ---
 name: reqcheck
-description: Use this skill before writing code when the user has a vague feature idea, bug report, screenshot, competitor reference, product change, or asks to build something but is not technical enough to specify fields, APIs, states, edge cases, or release constraints. This skill turns fuzzy product requests into a clear development brief by expanding likely goals, finding hidden risks, clarifying what not to do yet, explaining what could break if skipped, and asking at most 3 important questions before implementation. For permissions, payments, app review, privacy, health data, dates, async AI/upload flows, login/account, or cross-surface data, use deep mode and audit whether every UI success/failure state has a real source of truth. Use it even if the user does not explicitly ask for "requirements" or "PRD".
+description: Use before implementation when a request could hide product, state, regression, source-of-truth, AI-context, visual, integration, or release-path blind spots. Especially useful for vague product requests, bug reports, screenshots, permissions, payments, app review, privacy/legal, health or sensitive data, async AI/upload flows, login/account, cross-surface data, existing UI changes, and any state that claims success, connected, synced, saved, authorized, paid, deleted, or complete. The skill makes the agent walk through the product like a real user, then produce a concrete development brief with negative cases and evidence requirements before coding.
 ---
 
-# ReqCheck
+# Blindspot Skill (ReqCheck)
 
-Use this skill to clarify a software request before implementation.
+> Make AI agents think through what they are about to miss.
 
-The user may not know how to describe technical constraints. Do not wait for them to mention fields, APIs, states, permissions, edge cases, compatibility, or release steps. Think through the common places where AI-generated software breaks, then ask only the questions that affect product direction.
+Use this skill before writing code. The goal is not to create a long PRD. The goal is to catch the hidden product, state, regression, integration, AI, and release issues that make an implementation look correct while real users still hit bugs.
 
-This skill does not write code, edit files, test the finished feature, or deploy. It produces a clear development brief that another coding agent can execute.
+This skill does not write code, test the finished feature, or deploy. It produces a buildable brief and the evidence needed to know when the work is actually done.
 
-## Output Goals
+---
 
-Complete five things:
+## 0. Blindspot Read
 
-1. Turn the user's fuzzy request into 2-3 possible directions.
-2. Explain what each direction changes, roughly where the cost is, and what it may affect.
-3. Make the user choose a clear version that can be handed to a coding agent.
-4. Write what is not being done now, why, what could go wrong if skipped, and how to reduce that risk.
-5. For high-risk requests, audit UI promises against real evidence before allowing any success, connected, saved, synced, authorized, deleted, paid, or completed state.
+Start with a one-line read:
 
-Use plain language. Avoid technical questions that a non-code user cannot answer unless the answer is truly a product decision.
+> Reading this as: `<request type>` for `<user/audience>`, with likely blind spots around `<states/surfaces/release/data>`.
 
-## Workflow
+Classify the request:
 
-Follow this order:
+| Type | Signs | Move |
+| --- | --- | --- |
+| Vague product ask | "make this better", screenshot, competitor reference, bad feeling | Expand 2-3 likely goals |
+| Existing behavior change | bug fix, redesign, refactor, copy/UI edit, replacement | Run Regression Contract |
+| High-risk state | permission, payment, sync, delete, login, app review, privacy, AI, upload | Run Source-of-Truth Audit |
+| Cross-surface data | same value appears on home, settings, export, AI, notification | Map read/write paths |
+| Release-sensitive | native build, backend, migration, config, cache, live update | Run Release Evidence |
 
-1. Judge how clear the request is.
-2. If unclear, expand it into possible goals and versions.
-3. Look at project context if available: existing code, docs, screenshots, competitors, current stage.
-4. Tag high-risk domains: permissions, payments/subscriptions, app review, privacy/legal, health data, dates/reports, async AI/upload, login/account, deletion/export, or shared data shown in many places.
-5. If any high-risk tag applies, run Deep Mode before asking questions.
-6. Run the common bug scenario check below.
-7. Give a smallest useful version and a fuller version.
-8. List risks and not-doing tradeoffs.
-9. Ask at most 3 questions that change the direction.
-10. After the user confirms, output a development brief.
+Ask at most 3 questions, and only if the answer changes product direction. Avoid technical questions a non-code user cannot answer.
 
-## Deep Mode
+---
 
-Use Deep Mode whenever the request touches permissions, payments, app review, privacy/legal, health data, dates/reports, async AI/upload flows, login/account, deletion/export, or a UI state that claims something is saved, synced, connected, authorized, paid, deleted, complete, or successful.
+## 1. Human User Walkthrough
 
-Deep Mode is not more brainstorming. It is an evidence check. The goal is to prevent UI that makes users or reviewers believe something happened when the system cannot prove it.
+Before designing the fix, mentally use the product as real people would.
 
-### Source-of-Truth Audit
+Walk through the flow as:
 
-List the important UI states and promises before implementation:
+- first-time user who has no context
+- impatient user who reads only titles and buttons
+- user who denies, cancels, leaves, or returns later
+- user on a small screen, tablet, long translation, or large font
+- user with no data, partial data, stale data, or offline state
+- reviewer/support person checking whether the UI tells the truth
 
-| UI says | User will believe | Source of truth | Can verify reliably? | If not verified, safer UI |
+For each relevant persona, write:
+
+| User moment | What they see | What they believe | What can go wrong | Safer design |
 | --- | --- | --- | --- | --- |
-| Connected / complete / saved / paid / synced / authorized | The action really succeeded | API response, backend record, local transaction, OS permission API, receipt, webhook, query result, or explicit user confirmation | yes/no/partial | pending, unverified, attempted, needs confirmation, continue without, retry |
 
 Rules:
 
-- Do not allow a success state unless a specific source of truth proves it.
-- If a platform hides or limits the status, say that plainly and design the UI as "unverified" or "will try to sync", not "connected" or "complete".
-- A local flag is only proof of local user intent unless it is backed by a real permission, backend, receipt, or data-read result.
-- If data absence and permission denial look the same, do not label the state as denied or granted. Use neutral copy and a recovery path.
-- If an old request, cache, webhook, OTA, or backend job can overwrite the new action, include the stale-response guardrail.
+- Do not expose internal formulas, flags, model names, or implementation terms unless users need them.
+- Use exact numbers only when users likely know or can verify them.
+- If the UI can state the real situation simply, do not hide it behind vague reassurance.
+- After the user completed an action, show state and next step first; put details behind secondary UI.
 
-### State Machine
+---
 
-For high-risk work, list states instead of only the happy path:
+## 2. Source-of-Truth Audit
 
-- initial / not requested
-- requesting / loading
-- user cancels or backs out
-- system returns but result is unknown
-- allowed / verified
-- denied / unavailable
-- partial success
-- no data yet
-- retry / reconnect / restore
-- offline / timeout
-- stale local cache or old async response
+Run this for any UI state that says or implies: connected, synced, saved, authorized, paid, deleted, submitted, complete, successful, available, or up to date.
 
-Only include states that apply, but do not skip "unknown" when the platform or API cannot prove the result.
+| UI says | User believes | Real source of truth | Can verify? | Safer UI if not verified |
+| --- | --- | --- | --- | --- |
 
-### Negative Acceptance
+Acceptable proof can include:
 
-For high-risk work, acceptance checks must include the ways the feature can lie:
+- API response that confirms final state
+- backend record or database row
+- receipt, webhook, or transaction verification
+- OS/platform permission API
+- successful write/probe when read status is hidden
+- query result from the true data source
+- explicit user confirmation when no automatic proof exists
 
-- User denies permission, payment fails, AI fails, upload fails, or backend times out.
-- User leaves mid-flow and returns.
-- The same data is viewed from another page.
-- Device, language, screen size, OS version, or review environment differs.
-- The system returns no data even though the request technically succeeded.
+Rules:
 
-If any of these cases can show a misleading success state, the brief is not ready.
+- A local flag is proof of local intent only.
+- A returned callback is proof that the flow returned, not that it succeeded.
+- Empty data is not the same as denied permission or failed sync.
+- If success cannot be verified, use pending, unknown, attempted, no data yet, will try to sync, or continue without.
+- Include stale-response protection when old requests, caches, webhooks, jobs, or live updates can overwrite newer user actions.
 
-## Common Bug Scenario Check
+---
 
-Before asking the user questions, map the request to these software scenarios. If a row applies, ask the corresponding product question in plain language.
+## 3. Regression Contract
 
-| Scenario | What breaks when missed | Example in another project | Ask before development |
-| --- | --- | --- | --- |
-| Temporary result vs final result | User only previewed, edited halfway, or left the page, but the data already became real | E-commerce preview reserves stock; approval draft is sent; import preview creates real customers | When does this data become real? What happens if the user cancels, goes back, or closes the page? |
-| New entry reusing old entry | Two entries create the same object, but their input, validation, timeout, and errors differ | Bulk import reuses manual form validation; voice input reuses text input and loses fields | Is this just a variant of an old entry, or a new flow? What can be reused, and what needs separate handling? |
-| Same data shown in many places | Home, detail, notification, export, and AI summary show different numbers | Dashboard sales differ from exported Excel; wallet balance differs from checkout | Which place is the source of truth? Where else will this data appear? |
-| Page context inheritance | User starts from one page, but the result saves to a default place | Add calendar event from May 1 but it saves to today; add task under Project A but it goes to default project | What context should carry over from the current page: date, project, store, customer, role? |
-| Business time vs created time | Reports and lists use the time the row was created, not when the event happened | Today entering last week's expense counts as today's cost; backfilled inventory appears in today's report | What date or period does this record belong to? Are created time and event time different? |
-| Completion, expiry, and late confirmation | The system does not know whether something is done, expired, failed, or still waiting | Appointment time passes; course reaches 90%; task is submitted after deadline | When is this done? What if the user does not open the product at that moment? Can they confirm later? |
-| Non-default environment | Default device and language work, but real users use other conditions | Long translated text squeezes buttons; small phone hides the main action; dark mode has low contrast; streaming request misses locale/auth headers | Which languages, screen sizes, font sizes, themes, OS versions, and special request paths must work in version one? |
-| Old request overwrites new action | A slower old response replaces the user's latest action | Uploaded avatar flashes then returns to default; cart quantity changes back; old profile response overwrites new nickname | After the user acts, can older requests or caches overwrite the new result? Show local result first or wait for server? |
-| Failure retry and loading state | Failure causes endless loading, repeated retry, flicker, or duplicate submit | Upload progress jumps forever; payment retries repeatedly; dashboard skeleton flashes offline; AI generation button stays stuck | What should users see on failure, timeout, or offline? Retry automatically? How many times and how often? |
-| Permission denial and partial usability | Rejecting one permission blocks the whole product | Deny location and cannot type address manually; deny photos and cannot change avatar; deny notification but settings still show enabled | If permission is denied, what stops working? Is there a manual fallback? Can other features still work? |
-| Release path and version | Code changed, but users see another version or frontend/backend do not match | Web cache serves old page; frontend button is live but backend API is not; app review build opens and asks for update | How does this change reach users: frontend release, backend deploy, config switch, native app build, data migration? |
-| Unverifiable success state | The UI says connected, saved, synced, paid, or authorized, but the system cannot prove it | HealthKit read permission status is hidden; payment redirect returns before webhook; upload job is queued but not processed | What proves this success state is true? If it cannot be proven, should the UI say pending, unverified, or will try? |
-| UI promise vs real behavior | Page, policy, review note, or marketing says one thing; system behavior does another | Delete account button exists but backend keeps data; privacy policy says no location but app requests it; refund copy exists but no refund flow | Does backend, permission behavior, data handling, and support flow actually match what the UI or policy says? |
+Run this when changing existing behavior.
 
-Do not dump this whole table into the response. Pick the relevant rows.
+List what must stay true unless the user explicitly agrees to change it:
 
-## What Not To Do Yet
+- Entry points: pages, buttons, routes, jobs, API callers, deep links, notifications.
+- Visible content: labels, values, units, icons, buttons, empty/loading/error/disabled states.
+- Interaction: tap, type, drag, back/cancel, repeat tap, return from external app, final commit timing.
+- Data rules: source of truth, rounding, unit, timezone, persistence, sync, analytics, derived values.
+- Layout: safe area, keyboard, small screen, tablet, long text, large font, orientation, clipping, overlap.
+- Release: frontend, backend, native build, config, migration, feature flag, cache, live update.
 
-Every brief should include a not-doing section when scope is cut.
+For replacements, map old to new:
 
-Use this structure:
-
-| Not doing now | Why skip it now | What could go wrong | Guardrail |
+| Old contract | New component/library behavior | Covered? | Wrapper or extra work |
 | --- | --- | --- | --- |
 
-If skipping something can put data in the wrong place, make users think it worked when it did not, expose data, break review/payment/login, or create a hard later migration, call it out.
+Do not accept type checks as proof of UI behavior. Visual and interaction risks need visual or manual evidence.
 
-If skipping source-of-truth work can make the UI claim success without proof, explicitly mark that success state as pending/unverified, or require a verifiable backend/OS/receipt/data-read check before showing success.
+---
+
+## 4. Blindspot Scenario Pass
+
+Pick the rows that apply. Do not dump the whole table into the user response.
+
+| Blind spot | Failure mode | What to force into the brief |
+| --- | --- | --- |
+| Preview vs final | Half-edited or preview data becomes real | Define when data commits and what cancel/back does |
+| Multiple entry points | One button is fixed, another still uses old logic | Enumerate all callers and require shared behavior |
+| Same data everywhere | Home, detail, export, AI, notification disagree | Define source of truth and every read surface |
+| Created time vs event time | Backfilled records appear in the wrong day/report | Define business date separately from created time |
+| External integration no-data | Valid access looks broken because source has no records | Separate no-data from denied/failed |
+| Permission denial | Product blocks too much or says enabled falsely | Define partial usability and recovery path |
+| Old async overwrites new | Slow response, cache, job, or webhook reverts UI | Add request/version/stale guards |
+| Transition flicker | Final state is right but user sees wrong state briefly | Check loading, return, repeated tap, and intermediate states |
+| Prompt as guardrail | AI ignores a soft instruction | Use deterministic input filter/output guardrail when "must never" matters |
+| Old AI memory leaks | AI repeats outdated user setting or old facts | Audit prompt, structured context, memory, summary, examples, tools |
+| Structured output missing | Required cards/actions degrade to text | Define server-built or required structured outputs |
+| Copy is correct but unclear | User cannot choose quickly | Rewrite in user-known concepts and concrete actions |
+| Non-default environment | Long language, tablet, small screen, review device breaks | Include device/language/layout acceptance |
+| Release mismatch | Users/reviewers see old code or wrong layer | Require matching deploy/build/update evidence |
+
+---
+
+## 5. AI Context Audit
+
+Run this when AI output, recommendations, summaries, memory, tools, or generated UI cards are involved.
+
+List every AI input channel:
+
+- system/developer prompt
+- user message
+- structured context
+- retrieved memory
+- conversation summary
+- tool results
+- examples/few-shot text
+- server-side card/action builders
+- output critic, guardrails, repair step
+
+For each sensitive or forbidden claim, label the enforcement level:
+
+| Claim/rule | Input channel | Enforcement | Evidence |
+| --- | --- | --- | --- |
+
+Enforcement levels:
+
+- Soft guidance: prompt asks the model to behave.
+- Deterministic input filter: bad context is removed before the model sees it.
+- Deterministic output guardrail: bad output is blocked, stripped, or rewritten.
+- Server-rendered truth: numbers/actions/cards are generated outside the model.
+
+If the product requirement is "must never", soft guidance is not enough.
+
+---
+
+## 6. Release Evidence
+
+Do not mark the brief ready until the release path matches the changed layer.
+
+| Change layer | Evidence needed |
+| --- | --- |
+| JS/UI only | live-update id, frontend deploy id, or cache clear; plus visual/interaction check |
+| Native permissions, entitlements, platform manifest, camera, login provider | new native build number and packaged build evidence |
+| Backend/API/data model | deploy id, migration result, API/database proof |
+| AI prompt/guardrail/tool | deterministic negative fixture or log sample |
+| App review or public release | exact version/build reviewers or users will receive |
+
+If users may still see an older version, say that plainly.
+
+---
+
+## 7. Output
+
+If direction is not confirmed, output:
+
+```md
+## Blindspot Read
+Reading this as...
+
+## Possible Directions
+1. Smallest useful version...
+2. Fuller version...
+3. Not recommended now...
+
+## Main Blind Spots
+- ...
 
 ## Questions
+1. ...
+```
 
-Ask at most 3 questions at once.
-
-Good questions:
-
-- This feature is for internal testing or real users?
-- Should the result save immediately, or only after user confirmation?
-- If this starts from a date/project/store/customer page, should the result inherit that context?
-- If the request fails, should users retry, save a draft, or just return to the previous page?
-
-Bad questions for non-code users:
-
-- What database fields do you want?
-- What should the API schema be?
-- What component library should I use?
-
-Only ask technical questions after inspecting the project and only when it changes product direction.
-
-## Development Brief Format
-
-After the user confirms direction, output this structure:
+After the user confirms direction, output:
 
 ```md
 # Development Brief
 
 ## Background
-Why the user wants this.
 
 ## Goal
-What this change should solve now.
 
-## Not Doing
-What is not included, why, what could go wrong, and the guardrail.
+## Existing Behavior Contract
 
 ## User Path
-Where users enter, what they do, and how the flow ends.
 
 ## Pages and Interactions
-Pages, buttons, modals, messages, empty states, loading states.
 
 ## Data and Rules
-What is shown, saved, calculated, limited, or deleted.
 
 ## Source of Truth
-For any success/failure/connected/saved/synced/authorized/paid/deleted state: what proves it, whether it can be verified reliably, and what the UI says when it cannot be verified.
+
+## Reality Check
+Counterexamples that could make this wrong: different entry point, denied/unknown/no-data state, stale cache, old AI memory, tablet/small screen, long translation, release mismatch, reviewer environment.
 
 ## Edge Cases
-Failure, cancel, back, repeat tap, no data, permission denial, offline/timeout.
 
 ## AI Behavior
-If AI is involved: input, output, uncertainty, timeout, fallback, safety limits.
+
+## Not Doing
+| Not doing now | Why skip | What could go wrong | Guardrail |
 
 ## Acceptance
-How a non-code user can verify this is done, including negative tests where the feature fails, is denied, is cancelled, has no data, or cannot verify the result.
+Include happy path, denial/failure/cancel/no-data/unknown, cross-page consistency, visual checks, and release evidence.
+
+## Evidence Required
+Screenshots/manual checks, tests, API/database proof, deploy id, update id, build number, code references, or explicit residual risk.
 
 ## Dependencies and Impact
-Existing pages, data, external services, manual process, release path.
 
 ## Later
-What can be added after this version works.
 ```
 
-## Style
-
-Be direct and concrete.
-
-Avoid vague advice like "improve user experience" unless it is translated into a path, state, rule, or acceptance check.
+Keep the response direct. Translate vague UX advice into a path, state, rule, or acceptance check.

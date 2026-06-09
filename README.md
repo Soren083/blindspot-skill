@@ -1,74 +1,103 @@
-# ReqCheck
+<p align="center">
+  <img src="assets/readme-banner.svg" alt="Blindspot Skill - Make AI agents think through what they are about to miss" width="100%" />
+</p>
 
-Preflight checks for AI coding.
+# Blindspot Skill
 
-[中文说明](README.zh-CN.md)
+<p align="center">
+  <em>Make AI coding agents think through what they are about to miss.</em>
+</p>
 
-ReqCheck is a Codex / Claude skill that turns vague product ideas into development-ready briefs before an AI agent writes code.
+<p align="center">
+  <img src="assets/blindspot-skill-logo.svg" width="84" height="84" alt="Blindspot Skill" />
+</p>
 
-It is built for people who are not code-first. The user can say something rough like "build a customer import feature" or "make this page work like the competitor", and ReqCheck helps the AI ask the product questions that usually become bugs later.
+<p align="center">
+  <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/中文说明-README.zh--CN.md-22c55e?style=for-the-badge&labelColor=1e293b" alt="Chinese README"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-fbbf24?style=for-the-badge&labelColor=1e293b" alt="MIT License"/></a>
+  <a href="#install"><img src="https://img.shields.io/badge/Tools-Codex%20%C2%B7%20Claude%20Code-111827?style=for-the-badge&labelColor=1e293b" alt="Supported agents"/></a>
+</p>
+
+Blindspot Skill, formerly **ReqCheck**, is a pre-implementation skill for AI coding agents. It makes the agent walk through a request like a real human user, then hunt for the product, state, regression, source-of-truth, AI-context, visual, integration, and release-path blind spots it would usually miss.
+
+It is not a generic requirements checklist. It was distilled from **20+ real correction loops with Codex and Claude Code** while building and reviewing actual app features. In those sessions, the agents often wrote plausible plans and working code, but a human user still had to catch the parts that would break in real product use.
+
+## What Human Corrections Revealed
+
+| What the human had to correct | Agent blind spot |
+| --- | --- |
+| The UI claimed something was connected, saved, or enabled when the system could not prove it | False success states |
+| Empty external data was treated as failed permission or failed sync | No-data vs denied/unknown ambiguity |
+| One entry point was fixed while onboarding, settings, modal, or detail page still used old logic | Entry-point drift |
+| The final screen was correct, but the transition briefly flashed the wrong state | Transition-state blindness |
+| A live update was expected to fix behavior that actually required native, backend, config, or review changes | Release-layer mismatch |
+| AI output repeated outdated facts from old memory, summaries, examples, or prompt text | AI context leakage |
+| Prompt instructions were described as hard guardrails even though the model could ignore them | Soft guardrails mistaken for deterministic enforcement |
+| A required visual or structured response degraded into plain text | Structured-output omission |
+| Copy was technically accurate but real users could not quickly understand what to do | User-language blindness |
+| A read path was unified but write paths, caches, projections, or related surfaces stayed stale | Partial-chain fixes |
+
+Blindspot Skill turns those corrections into a repeatable pre-build pass.
 
 ## Why
 
-Most AI coding failures do not start in code.
+Most AI coding failures do not start with syntax.
 
-They start earlier, when the request skips questions like:
+They start when the agent does not ask:
 
-- When does this data become real?
-- What happens if the user cancels?
-- Does this new entry behave like the old entry?
-- Can an older request overwrite the user's latest action?
-- How will users actually get this version?
+- What would make this success state false?
+- What does a first-time user believe after seeing this copy?
+- Which other button, route, modal, job, or setting uses the same behavior?
+- Can old data, cache, memory, or async responses overwrite the latest user action?
+- Is this prompt rule actually enforceable?
+- Will users and reviewers receive the matching frontend, backend, native, and config version?
 
-ReqCheck makes the AI slow down before implementation and turn those hidden decisions into plain questions.
-
-For high-risk product work, ReqCheck also checks whether the UI has evidence for what it claims. A page should not say "connected", "saved", "synced", "paid", "authorized", "deleted", or "complete" unless there is a real source of truth behind that state. If an API, platform, or backend cannot prove the result, ReqCheck should push the design toward "pending", "unverified", "will try", or another honest fallback.
+Blindspot Skill makes the agent answer those questions before it writes code.
 
 ## Quick Demo
 
 User:
 
 ```md
-Build a customer import feature.
+Make this permission flow simpler.
 ```
 
-Without ReqCheck:
+Without Blindspot Skill:
 
 ```md
-AI starts coding an upload button.
+The agent rewrites the copy and ships a cleaner screen.
 ```
 
-With ReqCheck:
+With Blindspot Skill:
 
 ```md
-ReqCheck first asks:
+The agent first checks:
 
-1. After users upload a file, should customers be added immediately, or should users review the list first?
-2. If the file contains customers that already exist, should the system skip them automatically or ask users what to do?
-3. If only part of the file imports successfully, should users see which rows succeeded and which failed?
+1. What proves the permission is really enabled?
+2. What should the UI say if the platform returns but the result is unknown?
+3. Do onboarding, settings, and reconnect buttons use the same flow?
+4. Can this ship through a live update, or does it need a native build?
+5. What does an impatient first-time user understand from the title and button?
 ```
 
-That difference matters. The second version prevents real bugs: accidental imports, duplicate customers, unclear partial failures, and confusing recovery flows.
+The second version prevents a cleaner-looking UI from lying to users.
 
-## What ReqCheck Catches
+## What It Catches
 
-ReqCheck uses a pattern library extracted from real AI-assisted product development bugs.
-
-| Pattern | What it prevents |
+| Blind spot | What it prevents |
 | --- | --- |
-| Temporary result vs final result | Previewed or half-edited data becoming real too early |
-| New entry reusing old entry | A new input path incorrectly sharing old validation, timeout, or error handling |
-| Same data shown in many places | Home, detail, export, notification, and AI summary disagreeing |
-| Page context inheritance | New records saving to the wrong date, project, store, customer, or role |
-| Business time vs created time | Reports using when data was entered instead of when the event happened |
-| Completion / expiry / late confirmation | The system not knowing whether something is done, expired, or waiting |
-| Non-default environment | Long text, small screens, denied permissions, dark mode, or locale-specific paths breaking |
-| Old request overwrites new action | Slow old responses replacing the user's latest change |
-| Failure retry and loading state | Infinite loading, repeated retries, flicker, or duplicate submit |
-| Permission denial and partial usability | One rejected permission blocking the whole product |
-| Release path and version | Users, reviewers, frontend, and backend seeing different versions |
-| Unverifiable success state | UI claiming success when the system cannot prove the permission, payment, sync, or job actually succeeded |
-| UI promise vs real behavior | The UI or policy promising something the backend does not actually do |
+| False success state | UI says saved, connected, synced, or paid before there is proof |
+| Preview vs final | Half-edited or preview data becomes real too early |
+| Entry-point drift | Similar buttons behave differently across screens |
+| Same data everywhere | Home, detail, export, notification, and AI summary disagree |
+| External no-data ambiguity | Empty source data is mistaken for denial or failure |
+| Old state overwrite | Slow requests, caches, jobs, or webhooks revert fresh user actions |
+| Permission denial | Rejecting one permission blocks the whole product unnecessarily |
+| AI context leakage | Old memory, summaries, prompt examples, or tool results leak stale facts |
+| Soft guardrails | Prompt-only rules are mistaken for deterministic validation |
+| Visual regression | Type checks pass while small screens, tablets, long text, or large font break |
+| User-language blindness | Internal formulas and vague abstractions reach the user |
+| Release mismatch | Users, reviewers, frontend, backend, native build, and config see different versions |
 
 ## Install
 
@@ -107,17 +136,17 @@ My request:
 Build a customer import feature.
 ```
 
-ReqCheck should output:
+The skill should output:
 
-- possible goals
-- smallest useful version
-- fuller version
-- risks
-- source-of-truth audit for high-risk states
-- what not to do yet
-- what could break if skipped
+- a blindspot read
+- likely directions
+- real-user walkthrough
+- source-of-truth audit for success states
+- existing behavior contract for regressions
+- AI context audit when AI output is involved
+- release evidence requirements
 - at most 3 important questions
-- after confirmation, a development brief
+- after confirmation, a buildable development brief
 
 ## Examples
 
@@ -132,21 +161,21 @@ See:
 Each example includes:
 
 1. Original fuzzy request
-2. ReqCheck questions
+2. Skill questions
 3. Development brief outline
 
 ## Evaluation Ideas
 
-ReqCheck is not evaluated by whether it writes code. It is evaluated by whether it catches hidden product decisions before code is written.
+This skill is not evaluated by whether it writes code. It is evaluated by whether it catches hidden product decisions before code is written.
 
-A good ReqCheck response should:
+A good response should:
 
 - ask no more than 3 questions at a time
 - avoid database/API/schema questions before product rules are clear
 - include a not-doing section when scope is cut
 - explain what could break if something is skipped
-- catch at least one hidden state, data, context, failure, permission, or release problem
-- reject or downgrade success states that do not have a verifiable source of truth
+- catch hidden state, data, context, failure, permission, AI, visual, or release problems
+- downgrade success states that do not have a verifiable source of truth
 - include negative acceptance checks for high-risk requests
 - produce a brief a coding agent can implement after the user confirms direction
 
@@ -157,6 +186,8 @@ See [eval prompts](evals/prompts.json).
 ```text
 reqcheck/
   README.md
+  README.zh-CN.md
+  assets/
   skills/
     codex/reqcheck/SKILL.md
     claude/reqcheck/SKILL.md
