@@ -165,3 +165,66 @@ Examples:
 - A native permission, entitlement, manifest, or SDK change usually needs a new app build.
 - A backend schema change needs deploy and migration proof.
 - An app-review issue needs the exact version/build reviewers will receive, not just local code.
+
+## 17. Proxy Signal vs Real State
+
+Question: are you treating an indirect signal as proof?
+
+Examples:
+
+- Empty external data can mean no records, no permission, no account setup, a platform limitation, or a sync delay.
+- A callback from a platform flow can mean the user returned, not that the user accepted.
+- A missing field can mean "false", "not loaded", "not modeled yet", or "filtered out".
+- A local "attempted" flag can prove the app tried something, but not that the external system accepted it.
+
+## 18. Public Claim vs Evidence Ledger
+
+Question: can you prove the public claim you are about to ship?
+
+Examples:
+
+- If a README says "distilled from 376 correction moments", there should be a ledger or audit trail for that number.
+- If a product says "connected", it needs platform, backend, or probe evidence.
+- If a release note says "fixed", it should match the version/build/update users will receive.
+- If an AI feature says it follows a rule, decide whether that rule is prompt guidance or deterministic enforcement.
+
+## 19. Intended Flow vs Actual Runtime Path
+
+Question: does the user's real path execute the code you plan to change?
+
+Examples:
+
+- A normal chat route may use planner/guardrail/critic, while a "just logged a meal" route returns from a deterministic shortcut before those layers run.
+- A tablet device may run an iPhone-only app in compatibility mode and report phone-width dimensions.
+- A permission button in onboarding and a reconnect button in settings may look similar but call different handlers.
+- A live update may change JS while App Review still sees a previously packaged native permission string.
+
+## 20. Correction Request As Evidence
+
+Question: what did the user's correction reveal about the previous agent's hidden assumption?
+
+Examples:
+
+- "It still flashes the wrong page" means the final state may be correct, but the transition state is wrong.
+- "It says connected after I denied permission" means the agent treated a callback or local attempt flag as proof.
+- "This entry still behaves the old way" means another button, route, modal, shortcut, or settings page bypassed the fix.
+- "The AI still mentioned a disabled setting" means stale prompt text, memory, examples, summaries, or tool results leaked into the answer.
+- "This wording is technically right but users will not understand it" means the agent optimized for correctness, not user-known concepts.
+
+When the user asks for a rework, write one row before proposing a fix:
+
+| User correction | Prior AI assumption | Real blindspot | Preventive rule |
+| --- | --- | --- | --- |
+
+## 21. Selected Reference Fidelity
+
+Question: did the final output actually match the reference the user selected?
+
+Examples:
+
+- If the user chooses logo option F, do not recreate "something inspired by F" and call it done. Compare shape, material, colors, subject, composition, and tone against F.
+- If the user provides a prototype screenshot, preserve the chosen information hierarchy unless the user explicitly agrees to change it.
+- If a generated image is used as a source asset, save and use the generated bitmap unless there is a clear reason to rebuild it as vector or code.
+- If a UI redesign is based on a mature product, identify which behaviors are being borrowed and which should not be copied.
+
+Visual work needs reference-level acceptance, not only "looks polished."

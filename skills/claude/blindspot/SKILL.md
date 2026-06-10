@@ -29,6 +29,8 @@ Classify the request:
 | Cross-surface data | same value appears on home, settings, export, AI, notification | Map read/write paths |
 | Release-sensitive | native build, backend, migration, config, cache, live update | Run Release Evidence |
 
+If the user is asking to fix, rework, "look again", "this still feels wrong", or "why did this happen again", treat that as correction evidence, not just a new task. Infer what the previous AI implementation likely assumed, what real user behavior disproved, and which reusable blindspot would have caught it earlier.
+
 Ask at most 3 questions, and only if the answer changes product direction. Avoid technical questions a non-code user cannot answer.
 
 ---
@@ -43,6 +45,7 @@ Walk through the flow as:
 - impatient user who reads only titles and buttons
 - user who denies, cancels, leaves, or returns later
 - user on a small screen, tablet, long translation, or large font
+- user on compatibility mode or reviewer hardware where runtime dimensions, permissions, or accounts differ from the design assumption
 - user with no data, partial data, stale data, or offline state
 - reviewer/support person checking whether the UI tells the truth
 
@@ -75,6 +78,7 @@ Acceptable proof can include:
 - OS/platform permission API
 - successful write/probe when read status is hidden
 - query result from the true data source
+- audit ledger for public metric, origin, release, or impact claims
 - explicit user confirmation when no automatic proof exists
 
 Rules:
@@ -82,6 +86,8 @@ Rules:
 - A local flag is proof of local intent only.
 - A returned callback is proof that the flow returned, not that it succeeded.
 - Empty data is not the same as denied permission or failed sync.
+- A missing field is not automatically false; it can also mean not loaded, not modeled, or filtered out.
+- A public numeric claim needs a ledger. If there is no ledger, soften the claim or create one.
 - If success cannot be verified, use pending, unknown, attempted, no data yet, will try to sync, or continue without.
 - Include stale-response protection when old requests, caches, webhooks, jobs, or live updates can overwrite newer user actions.
 
@@ -109,7 +115,29 @@ Do not accept type checks as proof of UI behavior. Visual and interaction risks 
 
 ---
 
-## 4. Blindspot Scenario Pass
+## 4. Correction-Ledger Pass
+
+Run this whenever the request is a follow-up correction, bug report, screenshot after implementation, app review rejection, "still not fixed", "too ugly", "not clear", "this is not what users expect", or the user asks why an agent missed something.
+
+Do not only answer the current fix. Reverse-engineer the miss:
+
+| User correction | What the user actually observed | Prior AI assumption | Real blindspot | Rule to prevent next time |
+| --- | --- | --- | --- | --- |
+
+Look for these signals:
+
+- The user says the final state is correct but there was a flash, delay, stale view, or wrong intermediate screen.
+- The user says a state is false in reality: connected, enabled, saved, synced, logged in, authorized, deployed, fixed.
+- The user says the UI is technically correct but confusing, too wordy, not human, or exposes internal formulas.
+- The user tests a different device, language, permission choice, account state, old build, or entry point than the agent optimized for.
+- The user asks why a previous fix worked on one surface but not onboarding, settings, reconnect, notification, modal, detail, or app-review build.
+- The user points out that AI output used stale memory, old prompt examples, missing cards, or generic advice.
+
+When updating a skill or a requirements document, preserve these correction rows as reusable patterns. A real correction from a real user is stronger evidence than an invented edge case.
+
+---
+
+## 5. Blindspot Scenario Pass
 
 Pick the rows that apply. Do not dump the whole table into the user response.
 
@@ -120,19 +148,22 @@ Pick the rows that apply. Do not dump the whole table into the user response.
 | Same data everywhere | Home, detail, export, AI, notification disagree | Define source of truth and every read surface |
 | Created time vs event time | Backfilled records appear in the wrong day/report | Define business date separately from created time |
 | External integration no-data | Valid access looks broken because source has no records | Separate no-data from denied/failed |
+| Proxy state | A missing field, callback, empty result, or local flag is treated as real proof | Name the proxy and require the true source of truth |
 | Permission denial | Product blocks too much or says enabled falsely | Define partial usability and recovery path |
 | Old async overwrites new | Slow response, cache, job, or webhook reverts UI | Add request/version/stale guards |
 | Transition flicker | Final state is right but user sees wrong state briefly | Check loading, return, repeated tap, and intermediate states |
+| Intended path mismatch | The user path bypasses the route, module, or guardrail you plan to change | Trace the actual handler chain for each entry point |
 | Prompt as guardrail | AI ignores a soft instruction | Use deterministic input filter/output guardrail when "must never" matters |
 | Old AI memory leaks | AI repeats outdated user setting or old facts | Audit prompt, structured context, memory, summary, examples, tools |
 | Structured output missing | Required cards/actions degrade to text | Define server-built or required structured outputs |
 | Copy is correct but unclear | User cannot choose quickly | Rewrite in user-known concepts and concrete actions |
 | Non-default environment | Long language, tablet, small screen, review device breaks | Include device/language/layout acceptance |
 | Release mismatch | Users/reviewers see old code or wrong layer | Require matching deploy/build/update evidence |
+| Public claim without ledger | README, release note, or product claim uses a precise number or guarantee without proof | Link evidence, maintain a ledger, or use a softer claim |
 
 ---
 
-## 5. AI Context Audit
+## 6. AI Context Audit
 
 Run this when AI output, recommendations, summaries, memory, tools, or generated UI cards are involved.
 
@@ -147,6 +178,7 @@ List every AI input channel:
 - examples/few-shot text
 - server-side card/action builders
 - output critic, guardrails, repair step
+- deterministic short-circuits or fallback responses that bypass the normal AI chain
 
 For each sensitive or forbidden claim, label the enforcement level:
 
@@ -162,9 +194,11 @@ Enforcement levels:
 
 If the product requirement is "must never", soft guidance is not enough.
 
+Before proposing a new AI module, scan the existing planner, router, guardrail, critic, parser, card builder, and deterministic bypass paths. Many AI regressions happen because the proposed fix targets the intended chain while the real user path goes through another chain.
+
 ---
 
-## 6. Release Evidence
+## 7. Release Evidence
 
 Do not mark the brief ready until the release path matches the changed layer.
 
@@ -180,7 +214,7 @@ If users may still see an older version, say that plainly.
 
 ---
 
-## 7. Output
+## 8. Output
 
 If direction is not confirmed, output:
 

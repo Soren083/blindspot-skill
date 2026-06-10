@@ -24,7 +24,9 @@
 
 Blindspot Skill is a pre-implementation skill for AI coding agents.
 
-It was distilled from **376 real Codex and Claude Code mistakes** caught during product development: bugs that compiled, plans that sounded right, UI that looked cleaner, and agent answers that were technically plausible but still failed once a real human used the product.
+It was distilled from **376 real Codex, Claude Code, and PieBox correction moments** found while shipping real products, backed by a local corpus of **300 Codex session bodies**, a Claude Code archive with **377 local session identifiers**, and supporting PieBox stores with local sessions, messages, diffs, and LLM dumps. The retained evidence includes full transcripts, subagent traces, desktop session indexes, prompt history, usage events, message parts, and session diffs. The most useful mistakes were not syntax errors. They were bugs that compiled, plans that sounded right, UI that looked cleaner, and agent answers that were technically plausible but still failed once a real human used the product.
+
+The audit trail is here: [docs/origin-audit.md](docs/origin-audit.md). The correction-level ledger is here: [docs/correction-ledger.md](docs/correction-ledger.md).
 
 The pattern was painfully consistent: AI agents are fast at code, but they miss the boring product reality around the code. They forget entry points. They trust local flags. They confuse empty data with failure. They call prompt text a guardrail. They ship UI copy that only engineers understand. They fix the screen in front of them and miss the release path users actually receive.
 
@@ -47,7 +49,7 @@ The skill does not replace your judgment. It helps both you and the agent notice
 
 ## What Human Corrections Revealed
 
-| What 376 real mistakes exposed | Agent blind spot |
+| What the audited corrections exposed | Agent blind spot |
 | --- | --- |
 | The UI claimed something was connected, saved, or enabled when the system could not prove it | False success states |
 | Empty external data was treated as failed permission or failed sync | No-data vs denied/unknown ambiguity |
@@ -59,6 +61,8 @@ The skill does not replace your judgment. It helps both you and the agent notice
 | A required visual or structured response degraded into plain text | Structured-output omission |
 | Copy was technically accurate but real users could not quickly understand what to do | User-language blindness |
 | A read path was unified but write paths, caches, projections, or related surfaces stayed stale | Partial-chain fixes |
+
+The core move is simple: when a user asks an agent to "fix this again", Blindspot Skill treats that as evidence. It asks what the previous agent assumed, what the real user observed, and which reusable rule would have caught the miss before code was written.
 
 If you use AI coding agents to build real products, this skill is meant to catch the mistake before your users, reviewers, or teammates do.
 
@@ -217,6 +221,8 @@ blindspot-skill/
   packages/
     blindspot.skill
   docs/
+    origin-audit.md
+    correction-ledger.md
     patterns.md
   examples/
   evals/
