@@ -36,7 +36,7 @@ Local sources inspected for this pass:
 | B | Prompt-history or metadata plus enough user text to infer the product issue, but missing assistant replies or full diffs | Can support a repeated pattern, not a precise defect claim |
 | C | Diff-only, provider dump, queue task, or generic PieBox session with limited product context | Supporting signal only |
 
-Public wording should not imply that every local session identifier was fully hand-labeled. The honest claim is that the skill was distilled from a local corpus containing 300 Codex session bodies, 377 Claude local session identifiers, and supporting PieBox logs, with the highest-signal correction threads manually analyzed into the patterns below.
+Public wording should not imply that every local session identifier was fully hand-labeled. The honest claim is that the skill was distilled from two real large product projects, 481 local conversations / task records, 1,132 correction-style interaction signals, and the highest-signal correction threads manually analyzed into the 69 traceable patterns below. The underlying local corpus contains 300 Codex session bodies, 377 Claude local session identifiers, and supporting PieBox logs.
 
 ## Conversation Inventory
 

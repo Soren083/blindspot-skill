@@ -2,7 +2,7 @@
 
 This document records how Blindspot Skill was checked against the local Codex and Claude Code conversations it came from.
 
-The short version: the skill is genuinely grounded in real local product-development corrections, especially the KaloCam debugging and review work. The public README uses the "376 correction moments" line as a memorable origin claim, while this audit keeps the evidence tiers honest: the local corpus contains 300 Codex session bodies, 377 Claude local session identifiers, and supporting PieBox stores. The highest-signal correction threads are itemized in [correction-ledger.md](correction-ledger.md).
+The short version: the skill is genuinely grounded in real local product-development corrections, especially the KaloCam debugging and review work. The public README now uses a more defensible origin claim: two real large projects, 481 local conversations / task records, 1,132 correction-style interaction signals, and 69 traceable blindspot patterns. This audit keeps the evidence tiers honest: the local corpus contains 300 Codex session bodies, 377 Claude local session identifiers, and supporting PieBox stores. The highest-signal correction threads are itemized in [correction-ledger.md](correction-ledger.md).
 
 ## Audit Scope
 

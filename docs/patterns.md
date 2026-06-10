@@ -183,7 +183,7 @@ Question: can you prove the public claim you are about to ship?
 
 Examples:
 
-- If a README says "distilled from 376 correction moments", there should be a ledger or audit trail for that number.
+- If a README says "distilled from 1,132 correction-style interaction signals", there should be a ledger or audit trail for that number.
 - If a product says "connected", it needs platform, backend, or probe evidence.
 - If a release note says "fixed", it should match the version/build/update users will receive.
 - If an AI feature says it follows a rule, decide whether that rule is prompt guidance or deterministic enforcement.

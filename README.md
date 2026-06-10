@@ -24,7 +24,19 @@
 
 Blindspot Skill is a pre-implementation skill for AI coding agents.
 
-It was distilled from **376 real Codex, Claude Code, and PieBox correction moments** found while shipping real products, backed by a local corpus of **300 Codex session bodies**, a Claude Code archive with **377 local session identifiers**, and supporting PieBox stores with local sessions, messages, diffs, and LLM dumps. The retained evidence includes full transcripts, subagent traces, desktop session indexes, prompt history, usage events, message parts, and session diffs. The most useful mistakes were not syntax errors. They were bugs that compiled, plans that sounded right, UI that looked cleaner, and agent answers that were technically plausible but still failed once a real human used the product.
+Have you run into this?
+
+The agent writes the code. It runs. The UI looks fixed. Then you test it on a real device and find that it missed another entry point, misread a state, wrote copy no real user understands, or treated "returned from the system flow" as "success."
+
+**Blindspot Skill exists for that exact moment.**
+
+It was distilled from two real large product projects, including KaloCam and an AI product-monitoring platform. Across local Codex, Claude Code, and PieBox history, I found **481 local conversations / task records** and **1,132 correction, rework, follow-up, and plan-review interaction signals** left by the product builder during real-device testing, code review, App Review iteration, and deployment.
+
+I then reviewed the highest-signal chains and did not just record "what was wrong." I reverse-engineered what the agent had assumed, why that assumption failed in the real product, and distilled the result into **69 traceable agent blind spots**.
+
+These were not compiler errors. They were the product mistakes Codex, Claude Code, and PieBox most often make and least often catch by themselves: permission states that lie, old logic that survives in another route, AI memory leakage, technically correct copy that users cannot understand, OTA updates that cannot fix native behavior, and one entry point fixed while another remains broken.
+
+The goal is simple: **before the agent writes code, make it think through how a real user could break the feature.**
 
 The audit trail is here: [docs/origin-audit.md](docs/origin-audit.md). The correction-level ledger is here: [docs/correction-ledger.md](docs/correction-ledger.md).
 
