@@ -14,7 +14,7 @@ Local sources inspected for this pass:
 | --- | ---: | --- |
 | Codex session bodies | 300 | Full local JSONL session bodies: 296 active sessions plus 4 archived sessions. These provide the strongest correction evidence. |
 | Codex project/action candidate turns | 1,428 | User turns where the request was project-related and action-oriented. Used to locate high-signal sessions. |
-| High-signal KaloCam Codex thread | 1 | `019e8b8f-f84b-7e91-a439-2eb29deb93eb`, 296 user turns, covering TDEE, onboarding, Apple Health, Coach, iPad, release, and this skill. |
+| High-signal mobile-product Codex thread | 1 | `019e8b8f-f84b-7e91-a439-2eb29deb93eb`, 296 user turns, covering TDEE, onboarding, Apple Health, Coach, iPad, release, and this skill. |
 | Additional high-signal Codex threads | 10+ | App Review, TestFlight, iPad, Coach data mismatch, meal history, fasting, exercise, notification, payment, and build/deploy threads. |
 | Claude Code retained main transcripts | 23 | Full local JSONL transcript bodies in `~/.claude/projects`. |
 | Claude Code retained subagent traces | 6 | Execution traces used only as supporting evidence, not as user-facing main sessions. |
@@ -23,10 +23,10 @@ Local sources inspected for this pass:
 | Claude prompt history session IDs | 288 | User prompt history only. Used as lower-confidence evidence because assistant replies and diffs are missing. |
 | Claude usage event session IDs | 94 | Session activity evidence only. |
 | Unique Claude local session identifiers | 377 | Union of prompt-history and usage-event IDs. This is not the same as 377 retained full transcripts. |
-| PieBox local sessions | 7 | Small local session set, mostly non-KaloCam, used as supporting evidence for general agent blindspots. |
-| PieBox message files | 232 | Message metadata and parts; only 19 user-like messages with meaningful extracted text in this local store. |
-| PieBox session diffs | 322 | Useful for future deeper repository-diff reconstruction. |
-| PieBox LLM fetch dumps | 4,858 | Raw provider dumps, 2,983 Claude-named. Classified separately from user-facing coding-agent conversations. |
+| Other local agent-tool sessions | 7 | Small local session set, mostly outside the main mobile-product thread, used as supporting evidence for general agent blindspots. |
+| Other local agent-tool message files | 232 | Message metadata and parts; only 19 user-like messages with meaningful extracted text in this local store. |
+| Other local agent-tool session diffs | 322 | Useful for future deeper repository-diff reconstruction. |
+| Other local agent-tool LLM fetch dumps | 4,858 | Raw provider dumps, 2,983 Claude-named. Classified separately from user-facing coding-agent conversations. |
 
 ## Evidence Tiers
 
@@ -34,9 +34,9 @@ Local sources inspected for this pass:
 | --- | --- | --- |
 | A | Full transcript or session body plus concrete user correction, code review, screenshot, build/release result, or App Review feedback | Can support a named ledger row |
 | B | Prompt-history or metadata plus enough user text to infer the product issue, but missing assistant replies or full diffs | Can support a repeated pattern, not a precise defect claim |
-| C | Diff-only, provider dump, queue task, or generic PieBox session with limited product context | Supporting signal only |
+| C | Diff-only, provider dump, queue task, or generic additional-agent session with limited product context | Supporting signal only |
 
-Public wording should not imply that every local session identifier was fully hand-labeled. The honest claim is that the skill was distilled from two real large product projects, 481 local conversations / task records, 1,132 correction-style interaction signals, and the highest-signal correction threads manually analyzed into the 69 traceable patterns below. The underlying local corpus contains 300 Codex session bodies, 377 Claude local session identifiers, and supporting PieBox logs.
+Public wording should not imply that every local session identifier was fully hand-labeled. The honest claim is that the skill was distilled from two real large product projects, 481 local conversations / task records, 1,132 correction-style interaction signals, and the highest-signal correction threads manually analyzed into the 69 traceable patterns below. The underlying local corpus contains 300 Codex session bodies, 377 Claude local session identifiers, and supporting other local agent-tool logs.
 
 ## Conversation Inventory
 
@@ -59,12 +59,12 @@ Public wording should not imply that every local session identifier was fully ha
 | Claude Code | `00123bd1-7658-4322-ace0-31fb40ccbc87` | A | Coach consistency, quality, and visual-tool documents reviewed against code | Avoid parallel architecture and inspect real routing |
 | Claude Code | `59585b34-8473-43b9-b3a3-af0c2c213e0c` | A | Payment feature requirement document repeatedly reviewed | Cost/quota/payment source-of-truth and not-yet-implemented docs |
 | Claude Code | `377470df-e034-44fb-9209-05973bc56f93` | A | Data-change weekly report rules, rank wording, deployment path | User-understandable metrics, ranking rules, wrong deploy cwd |
-| Claude history | `cde4f3b9-f0a4-4cab-ac10-63972c1d2263` | B | KaloCam project errors, Coach rendering, weight chart, exercise options | Prompt-history support for multi-surface QA |
+| Claude history | `cde4f3b9-f0a4-4cab-ac10-63972c1d2263` | B | Mobile-product project errors, Coach rendering, weight chart, exercise options | Prompt-history support for multi-surface QA |
 | Claude history | `cac8ce33-9e63-456f-aeb0-6b72ef855b6e` | B | Detail page clutter, photo opening, delete, snack mismatch, Coach card persistence | Detail-state cleanup and persistence mismatch |
 | Claude history | `618e6145-97b1-4c90-b167-5f2b726c0d59` | B | Food recognition wrong foods, manual name edit not recalculating calories | AI extraction confidence and derived recalculation |
-| PieBox | `ses_3de6ad419ffe3SlSfRL9dMYjGK` | C | 403 Forbidden page implementation continued from incomplete task | Good UI requires full state page, not just one illustration |
-| PieBox | `ses_3de7f373effeHLMvdtq6NpJU8y` | C | Webpage reproduction and 403 page continuation | Visual fidelity and task continuation evidence |
-| PieBox | `ses_3ba45da5affdShqLQ45cDHxR7w` | C | Research Midscene to create a skill | Skill-writing needs real API/library evidence |
+| Other agent tool | `ses_3de6ad419ffe3SlSfRL9dMYjGK` | C | 403 Forbidden page implementation continued from incomplete task | Good UI requires full state page, not just one illustration |
+| Other agent tool | `ses_3de7f373effeHLMvdtq6NpJU8y` | C | Webpage reproduction and 403 page continuation | Visual fidelity and task continuation evidence |
+| Other agent tool | `ses_3ba45da5affdShqLQ45cDHxR7w` | C | Research Midscene to create a skill | Skill-writing needs real API/library evidence |
 
 ## Correction Rows
 
@@ -137,8 +137,8 @@ Public wording should not imply that every local session identifier was fully ha
 | 65 | AI model/provider configuration was scattered. | One model env var captures the project. | Configuration locality blindness. | Map every provider/base_url/key/model/fallback surface before changing AI config. |
 | 66 | README claimed a precise number of mistakes before a ledger existed. | Marketing claim can be directionally true. | Public claim without ledger. | Precise public claims need an audit trail or softer wording. |
 | 67 | Selected logo option F was replaced with a different SVG-like asset. | Recreating the idea is equivalent to using the chosen design. | Reference fidelity. | When the user selects a visual option, compare final asset against that option, not just theme. |
-| 68 | PieBox 403 work showed a page can be visually implemented while task continuation still needs remaining components. | Completing the main illustration completes the page. | Partial deliverable. | For UI implementation, verify every named component, route, state, and responsive variant. |
-| 69 | PieBox/Midscene research task reinforced that a skill needs real API evidence, not a generic overview. | A skill can be written from high-level project description. | Shallow tool-skill abstraction. | Skills for tools/libraries should cite install, API, usage, constraints, and failure modes from real sources. |
+| 68 | Other-agent 403 work showed a page can be visually implemented while task continuation still needs remaining components. | Completing the main illustration completes the page. | Partial deliverable. | For UI implementation, verify every named component, route, state, and responsive variant. |
+| 69 | Other-agent library research task reinforced that a skill needs real API evidence, not a generic overview. | A skill can be written from high-level project description. | Shallow tool-skill abstraction. | Skills for tools/libraries should cite install, API, usage, constraints, and failure modes from real sources. |
 
 ## Patterns Extracted From The Ledger
 

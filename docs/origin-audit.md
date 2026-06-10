@@ -2,7 +2,7 @@
 
 This document records how Blindspot Skill was checked against the local Codex and Claude Code conversations it came from.
 
-The short version: the skill is genuinely grounded in real local product-development corrections, especially the KaloCam debugging and review work. The public README now uses a more defensible origin claim: two real large projects, 481 local conversations / task records, 1,132 correction-style interaction signals, and 69 traceable blindspot patterns. This audit keeps the evidence tiers honest: the local corpus contains 300 Codex session bodies, 377 Claude local session identifiers, and supporting PieBox stores. The highest-signal correction threads are itemized in [correction-ledger.md](correction-ledger.md).
+The short version: the skill is genuinely grounded in real local product-development corrections, especially the mobile-product debugging and review work. The public README now uses a more defensible origin claim: two real large projects, 481 local conversations / task records, 1,132 correction-style interaction signals, and 69 traceable blindspot patterns. This audit keeps the evidence tiers honest: the local corpus contains 300 Codex session bodies, 377 Claude local session identifiers, and supporting other local agent-tool stores. The highest-signal correction threads are itemized in [correction-ledger.md](correction-ledger.md).
 
 ## Audit Scope
 
@@ -18,17 +18,17 @@ Local sources inspected during this audit:
 | Claude Code usage event session IDs | 94 | Local `~/.claude/usage-insights/events.jsonl`; proves session activity, but usually no full message text |
 | Claude Code prompt-history session IDs | 288 | Local `~/.claude/history.jsonl`; user prompt history only, not assistant replies or diffs |
 | Unique Claude local session identifiers | 377 | Union of usage-event session IDs and prompt-history session IDs; 5 IDs overlap |
-| Claude model API dumps | 2,983 | Local PieBox `llm-fetch-dumps/*claude*.json`; raw provider request/response dumps, classified separately from Claude Code sessions |
-| PieBox local sessions | 7 | Local `~/.local/share/piebox/storage/session` |
-| PieBox message files | 232 | Local `~/.local/share/piebox/storage/message`; paired with `part` files for user text |
-| PieBox session diffs | 322 | Local `~/.local/share/piebox/storage/session_diff` |
-| PieBox LLM fetch dumps | 4,858 | Local `~/.local/share/piebox/log/llm-fetch-dumps`; 2,983 Claude-named dumps |
+| Claude model API dumps | 2,983 | Local additional local agent-tool `llm-fetch-dumps/*claude*.json`; raw provider request/response dumps, classified separately from Claude Code sessions |
+| Other local agent-tool sessions | 7 | Local `~/.local/share/piebox/storage/session` |
+| Other local agent-tool message files | 232 | Local `~/.local/share/piebox/storage/message`; paired with `part` files for user text |
+| Other local agent-tool session diffs | 322 | Local `~/.local/share/piebox/storage/session_diff` |
+| Other local agent-tool LLM fetch dumps | 4,858 | Local `~/.local/share/piebox/log/llm-fetch-dumps`; 2,983 Claude-named dumps |
 | Primary Codex product thread | 1 | Session `019e8b8f-f84b-7e91-a439-2eb29deb93eb`, 296 user turns |
 | Additional Codex product threads deeply inspected | 10+ | App Review/build thread `019e6736...`, App Review/Coach thread `019ea510...`, iPad thread `019e870b...`, Coach data mismatch thread `019db51e...`, plus meal history, fasting, exercise, notification, payment, and build/deploy threads |
 | Claude Code review sessions deeply inspected | 8+ | Sessions `07dcd81a...`, `f4dffc8a...`, `bc98a5f6...`, `00123bd1...`, `59585b34...`, `377470df...`, and related Coach/payment/planner document-review sessions |
-| KaloCam git fixes cross-checked | 30+ | Fix commits from June 3-9, 2026 |
+| Mobile-product git fixes cross-checked | 30+ | Fix commits from June 3-9, 2026 |
 
-This is not a claim that every Codex file, Claude local session identifier, or PieBox dump has been fully hand-labeled. The 23 Claude main transcript JSONLs and 6 subagent traces are the currently retained full Claude Code transcript bodies; the larger 377 figure is a local-history/index count. PieBox is included as supporting local agent evidence, but its retained user-facing sessions are much smaller than its raw LLM dump store. This is a public audit of the highest-signal sessions that directly shaped the skill.
+This is not a claim that every Codex file, Claude local session identifier, or additional local agent-tool dump has been fully hand-labeled. The 23 Claude main transcript JSONLs and 6 subagent traces are the currently retained full Claude Code transcript bodies; the larger 377 figure is a local-history/index count. Additional local agent-tool stores are included as supporting evidence, but their retained user-facing sessions are much smaller than their raw LLM dump store. This is a public audit of the highest-signal sessions that directly shaped the skill.
 
 ## Claude Search Method
 
@@ -41,7 +41,7 @@ The Claude Code audit used several local stores because the current Claude Deskt
 - `~/.claude/usage-insights/events.jsonl`: event history. This proves session starts, prompt submits, stops, and cwd values, but usually does not contain message text.
 - `~/.claude/transcripts`: standalone transcript JSONL exports.
 - `~/.local/share/piebox/log/llm-fetch-dumps/*claude*.json`: raw Claude provider request/response dumps. These were classified separately because they are model/API call logs, not Claude Code conversations.
-- `~/.local/share/piebox/storage/message`, `part`, `session`, and `session_diff`: PieBox local session/message/diff stores. These were inspected separately because they are not Codex or Claude Code session bodies.
+- `~/.local/share/piebox/storage/message`, `part`, `session`, and `session_diff`: additional local agent-tool session/message/diff stores. These were inspected separately because they are not Codex or Claude Code session bodies.
 
 The 377 Claude number is the union of unique session identifiers in `history.jsonl` and `usage-insights/events.jsonl`; only five identifiers overlapped between those two stores during the audit. The inspectable full-transcript subset is much smaller, so public claims should avoid implying that all 377 identifiers have complete retained transcripts.
 
